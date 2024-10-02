@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Task with Movable Box, Trail, and Hidden Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000e4;
+            color: rgb(184, 184, 184);
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #b30000e0;
+            padding: 10px;
+            /* overflow: hidden; */
+            width: full;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* position: fixed; */
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        .navbar a:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        .maze-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 150px);
+        }
+
+        .container img {
+            max-width: 150px;
+            position: absolute;
+        }
+
+        .trail {
+            position: absolute;
+            background-color:#b30000e0;
+            height: 5px;
+        }
+
+        /* Hidden images styling */
+        #agamotto, #arc, #spider, #thor {
+            position: absolute;
+            max-width: 100px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 10px;
+        }
+
+        #agamotto { top: 75%; left: 85%; border: 2px solid white;}
+        #arc { top: 78%; left: 10%; border: 2px solid white;}
+        #spider { top: 25%; left: 15%; border: 2px solid white;}
+        #thor { top: 1%; left: 85%; border: 2px solid white;}
+
+        #agamotto:hover, #arc:hover, #spider:hover, #thor:hover {
+            opacity: 1;        
+        }
+
+        /* Controls styling */
+        .controls {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .controls button {
+            padding: 10px 15px;
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .controls button:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        .horizontal-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 160px;
+        }
+
+        /* Input box styling */
+        .input-container {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #b30000e0;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+        }
+
+        /* Direction box styling */
+        .direction-box {
+            position: absolute;
+            right: 20px;
+            top: 60%;
+            transform: translateY(-50%);
+            padding: 15px;
+            background-color: white;
+            color: #000;
+            border: 3px solid #b30000e0;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .h3{
+            align-items: center;
+            text-align: center;
+            bottom: 30%;
+        }
+
+        .div{
+            text-align: center;
+        }
+
+        .login a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        .login {
+            display: flex;
+        }
+
+        .head {
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="head">Crackathon.</div>
+        <div class="login">
+            <a href="{{ url_for('home') }}">HOME</a>
+        </div>
+    </div>
+
+    <div class="div">
+        <p>Follow the directions in the mirrored way <strong>LEFT IS RIGHT, RIGHT IS LEFT</strong></p>  
+        <h3>But If the boy move left, his right side is up , left side is down</h3>  
+        <h3>and If the boy move right, his left side is up , right side is down</h3>  
+        <hr>
+    </div>
+
+    <!-- Maze Container -->
+    <div class="maze-container" id="mazeContainer">
+        <div class="container">
+            <img id="taskImageLeft" src="{{ url_for('static', filename='stand.png') }}" alt="round" style="top: 70%; left: 50%; width: 50px;">
+        </div>
+
+        <!-- Hidden images -->
+        <img id="agamotto" src="{{ url_for('static', filename='agamotto.webp') }}" alt="agamotto">
+        <img id="arc" src="{{ url_for('static', filename='arc.jpg') }}" alt="arc reactor">
+        <img id="spider" src="{{ url_for('static', filename='spider.jpg') }}" alt="spider">
+        <img id="thor" src="{{ url_for('static', filename='thor.webp') }}" alt="thor hammer">
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button onclick="moveUp()">Up</button>
+        <div class="horizontal-controls">
+            <button onclick="moveLeft()">Left</button>
+            <button onclick="moveRight()">Right</button>
+        </div>
+        <button onclick="moveDown()">Down</button>
+    </div>
+
+    <!-- Directions -->
+    <div class="direction-box">
+        <p><strong>Directions:</strong></p>
+        <p><strong>R - Right, L - Left</strong></p>
+        <p><strong>1.</strong>R-3, L-3, R-3, L-3, R-3, L-3, R-3, L-6, L-2, R-2, L-18</p>
+        <p><strong>2.</strong>L-2, R-2, L-6, L-3, R-3, L-3, R-3, L-3, R-3</p>
+        <p><strong>NOTE:</strong>After finish, The drawed image hide on this page, find and click</p>
+    </div>
+
+    <!-- Input box -->
+        <!-- Input box -->
+    <!-- Input box -->
+    <div class="input-container">
+        <form method="POST">
+            <input type="text" name="user_input" id="inputBox" placeholder="Enter name in mirrored way">        </form>
+    </div>
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+    
+
+    <script>
+        // Select the image element and maze container
+        const imageLeft = document.getElementById('taskImageLeft');
+        const mazeContainer = document.getElementById('mazeContainer');
+        const agamottoImage = document.getElementById('agamotto');
+        const arcImage = document.getElementById('arc');
+        const spiderImage = document.getElementById('spider');
+        const thorImage = document.getElementById('thor');
+        const inputBox = document.getElementById('inputBox');
+
+        // Initialize position variables for the image
+        let currentTop = parseFloat(window.getComputedStyle(imageLeft).top);
+        let currentLeft = parseFloat(window.getComputedStyle(imageLeft).left);
+
+        // Create a line element for the trail
+        function createTrail(prevTop, prevLeft, newTop, newLeft) {
+            const trail = document.createElement('div');
+            trail.classList.add('trail');
+
+            // Set trail position and dimensions
+            let deltaX = newLeft - prevLeft;
+            let deltaY = newTop - prevTop;
+            let length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            trail.style.width = length + 'px';
+
+            let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+            trail.style.transform = `rotate(${angle}deg)`;
+
+            // Position the trail between the previous and new positions
+            trail.style.top = prevTop + 'px';
+            trail.style.left = prevLeft + 'px';
+
+            mazeContainer.appendChild(trail);
+        }
+
+        // Movement functions
+        function moveUp() {
+            let prevTop = currentTop;
+            let prevLeft = currentLeft;
+            currentTop = currentTop - 10;
+            imageLeft.style.top = currentTop + 'px';
+            createTrail(prevTop, prevLeft, currentTop, currentLeft);
+        }
+
+        function moveDown() {
+            let prevTop = currentTop;
+            let prevLeft = currentLeft;
+            currentTop = currentTop + 10;
+            imageLeft.style.top = currentTop + 'px';
+            createTrail(prevTop, prevLeft, currentTop, currentLeft);
+        }
+
+        function moveLeft() {
+            let prevTop = currentTop;
+            let prevLeft = currentLeft;
+            currentLeft = currentLeft - 10;
+            imageLeft.style.left = currentLeft + 'px';
+            createTrail(prevTop, prevLeft, currentTop, currentLeft);
+        }
+
+        function moveRight() {
+            let prevTop = currentTop;
+            let prevLeft = currentLeft;
+            currentLeft = currentLeft + 10;
+            imageLeft.style.left = currentLeft + 'px';
+            createTrail(prevTop, prevLeft, currentTop, currentLeft);
+        }
+
+        // Event listeners for hidden images
+        agamottoImage.addEventListener('click', function() {
+            alert('Agamotto');
+        });
+
+        arcImage.addEventListener('click', function() {
+            alert('ArcReactor');
+        });
+
+        spiderImage.addEventListener('click', function() {
+            alert('Spider');
+        });
+
+        thorImage.addEventListener('click', function() {
+            alert('Thor Hammer!');
+        });
+
+        // Input box listener for submission
+        inputBox.addEventListener('change', function() {
+            if (inputBox.value.toLowerCase() !== 'rotcaercra') {
+                alert('Incorrect. Try again!');
+            }
+        });
+    </script>
+
+</body>
+</html>

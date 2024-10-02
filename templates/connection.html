@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000e4;
+            color: rgb(184, 184, 184);
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #b30000e0;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .head {
+            font-weight: bold;
+            font-size: 30px;
+            color: white;
+        }
+
+        /* Title Styling */
+        .title {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .title h2 {
+            color: #ffffff;
+        }
+
+        .title p {
+            color: #5d5d5d;
+        }
+
+        /* Box Section Styling */
+        .box-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+        }
+
+        .pair {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px;
+            background-color: #fd4a4a7f;
+            border: 2px solid #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .set {
+            display: flex;
+            text-align: center;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .pair .image-box {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+        .pair h5 {
+            text-align: center;
+            color: white;
+        }
+
+        /* Input Box Styling */
+        .input-box {
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-box input {
+            padding: 5px;
+            border: 1px solid #fff;
+            border-radius: 10px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .input-box input.correct {
+            background-color: #28a745; /* Green background for correct input */
+            color: white;
+        }
+
+        .input-box input.incorrect {
+            background-color: #ffcccc; /* Red background for incorrect input */
+            color: black;
+        }
+
+        .input-box button {
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .input-box button:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        /* Word Display Box */
+        .word-box {
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .image-box h5 {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+        .a{
+            color: white; 
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="head">Connection Game</div>
+    </div>
+
+    <!-- Title -->
+    <div class="title">
+        <h2>Connect Images to Form a Word Related to Technology</h2>
+    </div>
+
+    <!-- Form Start -->
+    <form method="POST" action="/connection_task">
+
+        <!-- First Row of Pairs -->
+        <div class="box-section">
+            <div class="pair">
+                <div class="set">
+                    <div class="image-box" data-word="Database">
+                        <img src="static/data.png" alt="Data" width="100" height="100">
+                        <h5>4 letters</h5>
+                    </div>
+                    <div class="a">
+                        +
+                    </div>
+                    <div class="image-box" data-word="Database">
+                        <img src="static/science.png" alt="Triangle" width="100" height="100">
+                        <h5>7 letters</h5>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="input1" name="input1" placeholder="Enter word" 
+                           class="{% if correct_inputs.get('input1') %}correct{% elif error.get('input1') %}incorrect{% endif %}" 
+                           value="{{ request.form.input1 or '' }}">
+                    {% if error.get('input1') %}<p style="color:red;">{{ error.get('input1') }}</p>{% endif %}
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+            <div class="pair">
+                <div class="set">
+                    <div class="image-box" data-word="improve">
+                        <img src="static/improve.jpg" alt="" width="100" height="100">
+                        <h5>7 letters start 'i' ends 'e'</h5>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="input2" name="input2" placeholder="Enter word" 
+                           class="{% if correct_inputs.get('input2') %}correct{% elif error.get('input2') %}incorrect{% endif %}" 
+                           value="{{ request.form.input2 or '' }}">
+                    {% if error.get('input2') %}<p style="color:red;">{{ error.get('input2') }}</p>{% endif %}
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+            <div class="pair">
+                <div class="set">
+                    <div class="image-box" data-word="Net">
+                        <img src="static/search.png" alt="Net" width="100" height="100">
+                        <h5>see the img</h5>
+                    </div>
+                    <div class="a">
+                        +
+                    </div>
+                    <div class="image-box" data-word="work">
+                        <img src="static/engine.png" alt="Work" width="100" height="100">
+                        <h5>6 letters</h5>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="input3" name="input3" placeholder="Enter word" 
+                           class="{% if correct_inputs.get('input3') %}correct{% elif error.get('input3') %}incorrect{% endif %}" 
+                           value="{{ request.form.input3 or '' }}">
+                    {% if error.get('input3') %}<p style="color:red;">{{ error.get('input3') }}</p>{% endif %}
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+            <div class="pair">
+                <div class="set">
+                    <div class="image-box" data-word="data">
+                        <img src="static/algorithm.png" alt="Hard" width="100" height="100">
+                        <h5>before flowchart</h5>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="input4" name="input4" placeholder="Enter word" 
+                           class="{% if correct_inputs.get('input4') %}correct{% elif error.get('input4') %}incorrect{% endif %}" 
+                           value="{{ request.form.input4 or '' }}">
+                    {% if error.get('input4') %}<p style="color:red;">{{ error.get('input4') }}</p>{% endif %}
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+            <div class="pair">
+                <div class="set">
+                    <div class="image-box" data-word="skills">
+                        <img src="static/result.avif" alt="Develop" width="100" height="100">
+                        <h5>after finish exam</h5>
+                    </div>
+                    
+                </div>
+                <div class="input-box">
+                    <input type="text" id="input5" name="input5" placeholder="Enter word" 
+                           class="{% if correct_inputs.get('input5') %}correct{% elif error.get('input5') %}incorrect{% endif %}" 
+                           value="{{ request.form.input5 or '' }}">
+                    {% if error.get('input5') %}<p style="color:red;">{{ error.get('input5') }}</p>{% endif %}
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- Second Row of Pairs -->
+        <div class="box-section">
+            
+        </div>
+
+        <!-- Input for Final Sentence -->
+        <div class="input-box" style="margin-top: 5px;">
+            <h2>Enter the words to make the final sentence</h2>
+            <input type="text" id="input6" name="input6" placeholder="Enter sentence" style="width: 300px;" 
+                   class="{% if correct_inputs.get('input6') %}correct{% elif error.get('input6') %}incorrect{% endif %}" 
+                   value="{{ request.form.input6 or '' }}">
+            {% if error.get('input6') %}<p style="color:red;">{{ error.get('input6') }}</p>{% endif %}
+            <button type="submit">Submit</button>
+        </div>
+
+    </form>
+    <!-- Form End -->
+
+</body>
+</html>

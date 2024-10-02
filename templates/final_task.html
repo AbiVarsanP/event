@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000e4;
+            color: rgb(184, 184, 184);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 1.2s ease; /* Smooth background color transition */
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #b30000e0;
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+            margin-right: 10px;
+        }
+
+        .navbar a:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        /* Hint Box Styling */
+        .hint {
+            background-color: #fd4a4a7f; /* Changed to match login container */
+            border-color: black;
+            border-radius: 20px;
+            padding: 0px 30px;
+            margin-top: 20px;
+            border: 2px solid;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            width: 900px;
+            align-self: center; /* Center the hint box */
+        }
+
+        /* Centered Image and Input Box */
+        .content-container {
+            display: flex; /* Use flexbox to arrange items in a row */
+            justify-content: center; /* Center items horizontally */
+            align-items: center; /* Align items to the top */
+            margin-top: 20px;
+             /* Add margin on top */
+        }
+
+        /* Image Container Styling */
+        .image-container,
+        .rotatable-image-container,
+        .number-locker {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 100px; /* Add horizontal margin between containers */
+        }
+
+        .image-container img,
+        .rotatable-image-container img {
+            width: 200px; /* Adjust the image size as needed */
+            height: auto;
+            transition: transform 0.5s; /* Smooth transition for rotation */
+        }
+
+        /* Input Box Styling */
+        .input-box {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-box input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid white;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .input-box input[type="submit"] {
+            padding: 10px 20px;
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .input-box input[type="submit"]:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        .head {
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+            display: none; /* Hidden initially */
+        }
+
+        /* Transition for smooth fading */
+        .fade-out {
+            transition: opacity 1.2s ease; /* Smooth fade out */
+            opacity: 0; /* Initially transparent */
+        }
+
+        .rotatable-image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative; /* Make the container relative for absolute positioning */
+        }
+
+        /* Small Image Container */
+        .small-image-container {
+            position: absolute; /* Position small image absolutely */
+            top: 34%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for centering */
+        }
+
+        /* Style for button container */
+        .rotatable-image-container div {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-top: 10px; /* Add some margin above the buttons */
+        }
+
+        /* Number Locker Styling */
+        .number-locker {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            background-color: #fd4a4a7f;
+            padding: 30px;
+            border: 2px solid white;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .number-locker input[type="text"] {
+            width: 100px;
+            margin-bottom: 10px; /* Add margin below the input box */
+        }
+
+        .number-row {
+            display: flex;
+            gap: 10px; /* Space between buttons */
+            margin-bottom: 10px; /* Add margin below each row */
+        }
+
+        .number-locker button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .number-locker button:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        /* Added styles for rotate buttons */
+        .rotate-button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .rotate-button:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+        .end{
+            /* display: none; */
+            position: absolute;
+            top: 10%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .flash-messages{
+            text-align: center;
+            margin-top: 20px;
+            background-color: #360000e0;
+            border: 2px solid white;
+            padding: 5px;
+            font-family: Arial, sans-serif;
+            font-weight:700;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="head">Crackathon</div>
+        <div>
+            <a href="/home">Home</a>
+        </div>
+    </div>
+
+    <!-- Flash messages -->
+    
+
+    <!-- Hint Box -->
+    <div class="hint">
+        <h3>LOCKER HINT : (1,3) (2,2) (1,1) (1,2)</h3>
+    </div>
+
+    <!-- Centered Image and Input Box -->
+    <div class="content-container">
+        <div class="number-locker">
+            <form method="POST">
+                <input type="text" id="lockerInput" name="lockerInput" placeholder="Number Lock" style="padding: 5px; background-color: #20202090; border: 2px solid white; border-radius: 5px; color: white;">
+                <div class="number-row" style=" justify-content: center;">
+                    <button type="button" onclick="addNumber(1)">1</button>
+                    <button type="button" onclick="addNumber(2)">2</button>
+                    <button type="button" onclick="addNumber(3)">3</button>
+                </div>
+                <div class="number-row" style=" justify-content: center;">
+                    <button type="button" onclick="addNumber(4)">4</button>
+                    <button type="button" onclick="addNumber(5)">5</button>
+                    <button type="button" onclick="addNumber(6)">6</button>
+                </div>
+                <div class="number-row" style=" justify-content: center;">
+                    <button type="button" onclick="addNumber(7)">7</button>
+                    <button type="button" onclick="addNumber(8)">8</button>
+                    <button type="button" onclick="addNumber(9)">9</button>
+                </div>
+                <div class="number-row" style=" justify-content: center;">
+                    <button type="button" onclick="addNumber(0)">0</button>
+                </div>
+                <button type="submit" style="width: 150px;">Check Locker</button>
+            </form>
+        </div>
+
+        <div class="image-container">
+            <!-- Conditionally change the image if correct answer is submitted -->
+            <img id="taskImage" src="{% if correct %}/static/hand.gif{% else %}/static/hand.png{% endif %}" alt="Static Image" style="{% if correct %}width:255px{% endif %}">
+            <div class="input-box">
+                <form method="POST">
+                    <input type="text" id="userAnswer" name="userAnswer" placeholder="Your Answer">
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+
+        
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <script>
+        // Function to add number to locker input
+        function addNumber(num) {
+            const lockerInput = document.getElementById("lockerInput");
+            lockerInput.value += num; // Append number to the input
+        }
+
+        // Keep your existing setTimeout JS code for fading effect
+        if ({{ correct|tojson }}) {
+            setTimeout(() => {
+                Array.from(document.body.children).forEach(element => {
+                    element.classList.add('fade-out');
+                });
+                setTimeout(() => {
+                    document.body.style.backgroundColor = 'white';
+                }, 1200);
+            }, 1200);
+        }
+    </script>
+</body>
+</html>

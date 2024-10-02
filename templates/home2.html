@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color: #000000e4;
+            color: rgb(184, 184, 184);
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #b30000e0;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        .navbar a:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        /* Title Styling */
+        .title {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Box Section Styling */
+        .box-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            color: #ffffff;
+            background-color: #fd4a4a7f;
+            border: 2px solid #ffffff;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 20px;
+            padding: 20px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .box:hover {
+            transform: scale(0.9); /* Shrinks slightly on hover */
+        }
+
+        .box.locked {
+            background-color: #2e2e2e; /* Dark gray for locked boxes */
+            cursor: not-allowed; /* Show a not-allowed cursor for locked boxes */
+        }
+
+        .box.locked button {
+            background-color: #555;
+            color: #888;
+            cursor: not-allowed; /* Prevent click for locked boxes */
+            border: 2px solid #555;
+        }
+
+        .box.locked button:hover {
+            background-color: #555;
+            color: #888;
+            border: 2px solid #555; /* No hover effect on disabled button */
+        }
+
+        .box p {
+            text-align: center;
+        }
+
+        /* Button Styling */
+        .box button {
+            background-color: white;
+            color: #b30000e0;
+            border: 2px solid white;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .box button:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        /* Pop-up Box Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black background with opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            color: #000;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal button {
+            margin-top: 10px;
+        }
+
+        .close {
+            background-color: #b30000e0;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            background-color: darkred;
+        }
+
+        .head{
+            font-weight: bold;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="head">Crackathon</div>
+    </div>
+
+    <div class="title">
+        <h1>Welcome to Crackathon</h1>
+        <p style="color: #5d5d5d;">AN ADVENTURE OF CRACKING WEB WITH 4 LEVELS</p>
+        <hr>
+    </div>
+
+    <!-- Box Section 1 -->
+    <div class="box-section">
+        <!-- Level 1 -->
+        <div class="box">
+            <div>LEVEL - 1</div>
+            <div class="content">CONNECTION</div>
+            <button onclick="openModal('modal1')">Open</button>
+        </div>
+
+        <!-- Level 2 -->
+        <div class="box {% if '1' not in completed_levels %}locked{% endif %}">
+            <div>LEVEL - 2</div>
+            <div class="content">DECODE TASK</div>
+            <button {% if '1' not in completed_levels %}disabled{% else %}onclick="openModal('modal2')"{% endif %}>{% if '1' not in completed_levels %}Locked{% else %}Open{% endif %}</button>
+        </div>
+
+        <!-- Level 3 -->
+        <div class="box {% if '2' not in completed_levels %}locked{% endif %}">
+            <div>LEVEL - 3</div>
+            <div class="content">IMAGE TASK</div>
+            <button {% if '2' not in completed_levels %}disabled{% else %}onclick="openModal('modal3')"{% endif %}>{% if '2' not in completed_levels %}Locked{% else %}Open{% endif %}</button>
+        </div>
+    </div>
+
+    <!-- Box Section 2 -->
+    <div class="box-section">
+        <!-- Level 4 -->
+        <div class="box {% if '3' not in completed_levels %}locked{% endif %}">
+            <div>LEVEL - 4</div>
+            <div class="content">ENDGAME</div>
+            <button {% if '3' not in completed_levels %}disabled{% else %}onclick="openModal('modal4')"{% endif %}>{% if '3' not in completed_levels %}Locked{% else %}Open{% endif %}</button>
+        </div>
+    </div>
+
+    <!-- Pop-up Modals for Level Descriptions -->
+    {% for level, description in level_descriptions.items() %}
+    <div id="modal{{ level }}" class="modal">
+        <div class="modal-content">
+            <h3>LEVEL {{ level }}</h3>
+            <p>{{ description }}</p>
+            <!-- Redirect to respective pages based on the level -->
+            <button class="close" 
+                onclick="
+                    {% if level == '1' %}
+                        window.location.href='{{ url_for('connection_task') }}';
+                    {% elif level == '2' %}
+                        window.location.href='{{ url_for('decode_task') }}';
+                    {% elif level == '3' %}
+                        window.location.href='{{ url_for('image_task') }}';
+                    {% elif level == '4' %}
+                        window.location.href='{{ url_for('final_task') }}';
+                    {% endif %}
+                ">
+                Start
+            </button>
+            <button class="close" onclick="closeModal('modal{{ level }}')">Close</button>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- JavaScript for Modal Handling -->
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+    </script>
+</body>
+</html>

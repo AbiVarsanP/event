@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000e4; /* Background color remains unchanged */
+            color: rgb(184, 184, 184);
+            /* margin: 0;
+            padding: 0; */
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center; */
+            align-items: center;
+            /* min-height: 100vh;
+            overflow: auto; */
+        }
+        .navbar {
+            background-color: #b30000e0;
+            padding: 10px;
+            /* overflow: hidden; */
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* position: fixed; */
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        .navbar a:hover {
+            background-color: #adadad;
+            border: 2px solid black;
+            color: black;
+        }
+
+        .description-box {
+            background-color: #fd4a4a7f;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            border: 2px solid #ffffff;
+            text-align: center;
+            width: 300px;
+        }
+
+        .values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-weight: normal; /* Adjust font weight for values */
+        }
+
+        .input-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-row {
+            display: flex; /* Arrange input boxes in a row */
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px; /* Add margin between input boxes */
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            margin: 5px;
+            width: 100px; /* Adjust width to fit in a single row */
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+            background-color: #ffffff; /* White background for input */
+            color: #000000;
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #fd4a4a;
+            color: #ffffff;
+        }
+
+        .correct-input {
+            background-color: #4CAF50 !important; /* Green color for correct input */
+        }
+
+        .hint {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        .navbar {
+            background-color: #b30000e0;
+            overflow: hidden;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .login a {
+            float: left;
+            display: block;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            background-color: white;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        .login {
+            display: flex;
+        }
+
+        .head {
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .image-container {
+            margin-top: 20px;
+            display: none;
+            
+        }
+
+        .image-container img {
+            width: 300px;
+            height: auto;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="head">Crackathon.</div>
+        <div class="login">
+            <a href="{{ url_for('home') }}">HOME</a>
+        </div>
+        <button id="toggleImageBtn" onclick="toggleImage()">Binary to Decimal</button>
+    </div>
+    <h1>Decode Task</h1>
+
+    <div class="description-box">
+        <div class="values">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+        </div>
+        <div class="values">
+            <div>11</div>
+            <div>101</div>
+            <div>01</div>
+            <div>100</div>
+            <div>00</div>
+            <div>001</div>
+            <div>10</div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <h2>Enter binary number using alphabets</h2>
+        <div class="input-row">
+            <div class="input-box">
+                <div class="hint">BG</div>
+                <input type="text" id="input1" placeholder="Enter binary">
+                <button type="button" onclick="checkAnswer(1)">Submit</button>
+            </div>
+            <div class="input-box">
+                <div class="hint">EB</div>
+                <input type="text" id="input2" placeholder="Enter binary">
+                <button type="button" onclick="checkAnswer(2)">Submit</button>
+            </div>
+            <div class="input-box">
+                <div class="hint">DA</div>
+                <input type="text" id="input3" placeholder="Enter binary">
+                <button type="button" onclick="checkAnswer(3)">Submit</button>
+            </div>
+            <div class="input-box">
+                <div class="hint">BE</div>
+                <input type="text" id="input4" placeholder="Enter binary">
+                <button type="button" onclick="checkAnswer(4)">Submit</button>
+            </div>
+            <div class="input-box">
+                <div class="hint">FC</div>
+                <input type="text" id="input5" placeholder="Enter binary">
+                <button type="button" onclick="checkAnswer(5)">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New section for decoding binary to decimal -->
+    <div class="input-container">
+        <h2>Decode Binary to Decimal</h2>
+        <div class="input-row">
+            <div class="input-box">
+                <input type="text" id="binaryInput1" placeholder="Enter decimal">
+                <button type="button" onclick="checkDecimalAnswer(1)">Submit</button>
+            </div>
+            <div class="input-box">
+                <input type="text" id="binaryInput2" placeholder="Enter decimal">
+                <button type="button" onclick="checkDecimalAnswer(2)">Submit</button>
+            </div>
+            <div class="input-box">
+                <input type="text" id="binaryInput3" placeholder="Enter decimal">
+                <button type="button" onclick="checkDecimalAnswer(3)">Submit</button>
+            </div>
+            <div class="input-box">
+                <input type="text" id="binaryInput4" placeholder="Enter decimal">
+                <button type="button" onclick="checkDecimalAnswer(4)">Submit</button>
+            </div>
+            <div class="input-box">
+                <input type="text" id="binaryInput5" placeholder="Enter decimal">
+                <button type="button" onclick="checkDecimalAnswer(5)">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New input box for decoding decimals to alphabet -->
+    <div class="input-container">
+        <h2>Decode the decimals to alphabet and arrange and enter</h2>
+        <form method="POST">  <!-- Add form tag to enable submission -->
+            <div class="input-box">
+                <input type="text" name="finalInput" id="finalInput" placeholder="Enter name" required>
+                <button type="submit">Submit</button> <!-- Change to submit button -->
+            </div>
+        </form>
+    </div>
+
+    <div class="image-container" id="imageContainer">
+        <img src="static/clue.png" alt="Placeholder Image">
+    </div>
+
+    <script>
+        const correctAnswers = ["10110", "00101", "10011", "10100", "00101"];
+        const decimalAnswers = ["22", "5", "19", "20", "5"];
+
+        function checkAnswer(index) {
+            const userAnswer = document.getElementById(`input${index}`).value;
+            if (userAnswer === correctAnswers[index - 1]) {
+                document.getElementById(`input${index}`).classList.add('correct-input');
+            } else {
+                alert("Incorrect binary number! Try again.");
+            }
+        }
+
+        function checkDecimalAnswer(index) {
+            const userDecimalAnswer = document.getElementById(`binaryInput${index}`).value;
+            if (userDecimalAnswer === decimalAnswers[index - 1]) {
+                document.getElementById(`binaryInput${index}`).classList.add('correct-input');
+            } else {
+                alert("Incorrect! Try again.");
+            }
+        }
+
+        function toggleImage() {
+            const imageContainer = document.getElementById('imageContainer');
+            const toggleButton = document.getElementById('toggleImageBtn');
+
+            if (imageContainer.style.display === 'none' || imageContainer.style.display === '') {
+                imageContainer.style.display = 'block';
+                toggleButton.textContent = 'Hide Image';
+            } else {
+                imageContainer.style.display = 'none';
+                toggleButton.textContent = 'Show Image';
+            }
+        }
+    </script>
+</body>
+</html>
